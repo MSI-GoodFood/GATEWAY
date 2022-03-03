@@ -65,21 +65,22 @@ func (s *Service) SetupRoute(r gin.IRouter) {
 	// Account --
 	r.POST("/user/signup", s.Signup)
 	r.POST("/user/login", s.Login)
+	// GET  /user/logout
 
 	// User --
 	r.GET("/user/:id", s.GetUserById)
 
-	// Todo --
+	// Todos --
 	r.POST("/todos", s.CreateTodo)
-
-	// GET  /user/logout
-
-	// Must be protected by a middleware checking the validity of the token in the cookie
-	// 401 if not valid
-
+	r.GET("/todos/:id", s.GetAllForUser)
 	// POST    /todos
 	// GET     /todos
 	// GET     /todos/:id
 	// UPDATE  /todos/:id
 	// DELETE  /todos/:id
+
+	// Must be protected by a middleware checking the validity of the token in the cookie
+	// 401 if not valid
+
+
 }

@@ -11,6 +11,10 @@ type UserStorePG struct {
 	db *pgxpool.Pool
 }
 
+func NewUserStorePG(db *pgxpool.Pool) *UserStorePG {
+	return &UserStorePG{db}
+}
+
 func (store UserStorePG) Insert(user User) (*User, error) {
 	_, err := store.db.Exec(
 		context.Background(),
@@ -47,8 +51,4 @@ func (store UserStorePG) FindByEmail(email string) (*User, error) {
 
 	if err != nil { return nil, errors.New(err.Error()) }
 	return &user, nil
-}
-
-func NewUserStorePG(db *pgxpool.Pool) *UserStorePG {
-	return &UserStorePG{db}
 }

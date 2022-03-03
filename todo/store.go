@@ -21,5 +21,5 @@ type TodoStore interface {
 	UpdateText(todoID uuid.UUID, text string) (*Todo, error)
 
 	FindByID(todoID uuid.UUID) (*Todo, error)
-	FindByUserID(userID uuid.UUID) ([]*Todo, error)
+	FindByUserID(userID uuid.UUID) (*Todos, error)
 }

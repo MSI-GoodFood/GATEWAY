@@ -44,6 +44,25 @@ func (store TodoStorePG) FindByID(todoID uuid.UUID) (*Todo, error) {
 	return nil, nil
 }
 
-func (store TodoStorePG) FindByUserID(userID uuid.UUID) ([]*Todo, error) {
-	return nil, nil
+func (store TodoStorePG) FindByUserID(userID uuid.UUID) (*Todos, error) {
+	var todos Todos
+
+	rows, err := store.db.Query(
+		context.Background(),
+		"SELECT * FROM \"Todo\" WHERE user_id = $1",
+		userID,
+	)
+	if err != nil { return nil, errors.New(err.Error()) }
+
+	for rows.Next() {
+		var todo Todo
+
+		err := rows.Scan(&todo.ID, &todo.Text, &todo.Done, &todo.UserId)
+
+		if err != nil { return nil, errors.New(err.Error()) }
+
+		todos = append(todos, todo)
+	}
+
+	return &todos, nil
 }
