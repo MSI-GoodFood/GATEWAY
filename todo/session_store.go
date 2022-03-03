@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/go-redis/redis/v8"
 	"github.com/gofrs/uuid"
+	"strings"
 )
 
 type SessionStoreRedis struct {
@@ -38,9 +39,10 @@ func (store SessionStoreRedis) Revoke(token string) error {
 }
 
 func (store SessionStoreRedis) FindByToken(token string) (userID uuid.UUID, err error) {
+
 	id, err := store.rdb.Get(
 		context.Background(),
-		token,
+		strings.Join(strings.Fields(token), ""),
 	).Result()
 
 	if err != nil { return uuid.Nil, errors.New(err.Error()) }

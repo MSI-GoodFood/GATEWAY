@@ -31,7 +31,7 @@ func (s *Service) TokenMiddleware() gin.HandlerFunc {
 
 			_, err := s.sessionStore.FindByToken(token)
 			if err != nil {
-				JsonError(c, "Wrong token")
+				JsonError(c, err.Error())
 				c.Abort()
 				return
 			}

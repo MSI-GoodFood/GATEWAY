@@ -22,6 +22,7 @@ type Service struct {
 func NewService(redisURI string, pgURI string) *Service {
 	rdb := redis.NewClient(&redis.Options{
 		Addr: redisURI,
+		DB: 0,
 	})
 
 	pgdb, err := pgxpool.Connect(context.Background(), pgURI)
@@ -68,7 +69,7 @@ func (s *Service) SetupRoute(r gin.IRouter) {
 	// Account --
 	r.POST("/user/signup", s.Signup)
 	r.POST("/user/login", s.Login)
-	// GET  /user/logout
+	r.GET("/user/logout", s.Logout)
 
 	// User --
 	r.GET("/user", s.GetUserById)

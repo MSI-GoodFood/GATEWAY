@@ -110,3 +110,22 @@ func (s *Service) Login(c *gin.Context) {
 	return
 }
 
+func (s *Service) Logout(c *gin.Context) {
+
+	token := GetToken(c)
+	if token == "" {
+		JsonError(c, "Error while getting token")
+		return
+	}
+
+	err := s.sessionStore.Revoke(token)
+	if err != nil {
+		JsonError(c, "Already logout")
+		return
+	}
+
+	JsonSuccess(c, nil)
+	return
+}
+
+
