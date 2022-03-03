@@ -17,7 +17,7 @@ type SessionStore interface {
 type TodoStore interface {
 	Add(Todo) (*Todo, error)
 	Delete(todoID uuid.UUID) error
-	Toggle(todoID uuid.UUID, done bool) (*Todo, error)
+	Toggle(todoID uuid.UUID, done int) (*Todo, error)
 	UpdateText(todoID uuid.UUID, text string) (*Todo, error)
 
 	FindByID(todoID uuid.UUID) (*Todo, error)

@@ -2,17 +2,16 @@ package todo
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gofrs/uuid"
 )
 
 func (s *Service) GetUserById(c *gin.Context) {
-	var id = c.Param("id")
-	if id == "" {
-		JsonError(c, "id empty")
+	token := GetToken(c)
+	if token == "" {
+		JsonError(c, "Error while getting token")
 		return
 	}
 
-	userUuid, err := uuid.FromString(id)
+	userUuid, err := s.sessionStore.FindByToken(token)
 
 	if err != nil {
 		JsonError(c, "wrong id")

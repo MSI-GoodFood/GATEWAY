@@ -36,7 +36,7 @@ func NewService(redisURI string, pgURI string) *Service {
 	_ = pgdb
 
 	return &Service{
-		// sessionStore: NewSessionStoreRedis(rdb),
+		sessionStore: NewSessionStoreRedis(rdb),
 		userStore: NewUserStorePG(pgdb),
 		todoStore: NewTodoStorePG(pgdb),
 	}
@@ -62,25 +62,21 @@ func initDatabase(dbPool *pgxpool.Pool) {
 }
 
 func (s *Service) SetupRoute(r gin.IRouter) {
+
+	r.Use(s.TokenMiddleware())
+
 	// Account --
 	r.POST("/user/signup", s.Signup)
 	r.POST("/user/login", s.Login)
 	// GET  /user/logout
 
 	// User --
-	r.GET("/user/:id", s.GetUserById)
+	r.GET("/user", s.GetUserById)
 
 	// Todos --
 	r.POST("/todos", s.CreateTodo)
-	r.GET("/todos/:id", s.GetAllForUser)
-	// POST    /todos
-	// GET     /todos
-	// GET     /todos/:id
-	// UPDATE  /todos/:id
-	// DELETE  /todos/:id
-
-	// Must be protected by a middleware checking the validity of the token in the cookie
-	// 401 if not valid
-
-
+	r.GET("/todos", s.GetAllForUser)
+	r.GET("/todos/:id", s.GetTodoById)
+	r.PUT("/todos/:id", s.Update)
+	r.DELETE("/todos/:id", s.Delete)
 }

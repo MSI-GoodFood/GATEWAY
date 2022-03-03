@@ -42,7 +42,13 @@ func (s *Service) Signup(c *gin.Context) {
 
 	token := randomString(20)
 
-	JsonSuccess(c, SignUp{
+	err = s.sessionStore.Add(user.ID, token)
+	if err != nil {
+		JsonError(c, err.Error())
+		return
+	}
+
+	JsonSuccess(c, Account{
 		User:  &user,
 		Token: token,
 	})
@@ -90,7 +96,13 @@ func (s *Service) Login(c *gin.Context) {
 
 	token := randomString(20)
 
-	JsonSuccess(c, SignUp{
+	err = s.sessionStore.Add(user.ID, token)
+	if err != nil {
+		JsonError(c, err.Error())
+		return
+	}
+
+	JsonSuccess(c, Account{
 		User: &user,
 		Token: token,
 	})
