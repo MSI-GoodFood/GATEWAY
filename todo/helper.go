@@ -1,10 +1,8 @@
 package todo
 
 import (
-	"bytes"
 	"crypto/rand"
 	"encoding/base64"
-	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -27,10 +25,4 @@ func randomString(len int) string {
 	rand.Read(buff)
 	str := base64.StdEncoding.EncodeToString(buff)
 	return str[:len]
-}
-
-func structToArrayOfBytes(data interface{}) []byte {
-	reqBodyBytes := new(bytes.Buffer)
-	json.NewEncoder(reqBodyBytes).Encode(data)
-	return reqBodyBytes.Bytes()
 }

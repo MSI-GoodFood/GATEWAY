@@ -37,11 +37,38 @@ func (store TodoStorePG) Toggle(todoID uuid.UUID, done bool) (*Todo, error) {
 }
 
 func (store TodoStorePG) UpdateText(todoID uuid.UUID, text string) (*Todo, error) {
-	return nil, nil
+	var todo Todo
+
+	err := store.db.QueryRow(
+		context.Background(),
+		"SELECT * FROM \"Todo\" WHERE id = $1",
+		todoID,
+	).Scan(&todo.ID, &todo.Text, &todo.Done, &todo.UserId)
+
+	todo.Text = text
+
+	_, err = store.db.Exec(
+		context.Background(),
+		"UPDATE \"Todo\" SET text=$1 WHERE id = $2",
+		text,
+		todoID,
+	)
+
+	if err != nil { return nil, errors.New(err.Error()) }
+	return &todo, nil
 }
 
 func (store TodoStorePG) FindByID(todoID uuid.UUID) (*Todo, error) {
-	return nil, nil
+	var todo Todo
+
+	err := store.db.QueryRow(
+		context.Background(),
+		"SELECT * FROM \"Todo\" WHERE id = $1",
+		todoID,
+	).Scan(&todo.ID, &todo.Text, &todo.Done, &todo.UserId)
+
+	if err != nil { return nil, errors.New(err.Error()) }
+	return &todo, nil
 }
 
 func (store TodoStorePG) FindByUserID(userID uuid.UUID) (*Todos, error) {
