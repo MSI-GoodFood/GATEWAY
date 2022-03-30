@@ -19,7 +19,7 @@ func NewSessionStoreRedis(db *redis.Client) *SessionStoreRedis {
 func (store SessionStoreRedis) Add(userID uuid.UUID, token string) error {
 	err := store.rdb.Set(
 		context.Background(),
-		token,
+		strings.Join(strings.Fields(token), ""),
 		userID.String(),
 		0,
 	).Err()
@@ -31,7 +31,7 @@ func (store SessionStoreRedis) Add(userID uuid.UUID, token string) error {
 func (store SessionStoreRedis) Revoke(token string) error {
 	err := store.rdb.Del(
 		context.Background(),
-		token,
+		strings.Join(strings.Fields(token), ""),
 	).Err()
 
 	if err != nil { return errors.New(err.Error()) }

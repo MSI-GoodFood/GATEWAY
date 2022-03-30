@@ -54,14 +54,6 @@ func (s *Service) Signup(c *gin.Context) {
 	})
 
 	return
-
-
-	// Creation a new token (random string of 20 characters)
-	// Add the token to redis session
-	// Add a cookie named "session_todo" with value a token
-	//
-	// return the created user as json:
-	// { "data": { "id": "1179459b-8a7c-4c38-b0ab-433d7ec3b958", "name": "myname" } }
 }
 
 func (s *Service) Login(c *gin.Context) {

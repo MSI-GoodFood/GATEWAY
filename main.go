@@ -1,8 +1,8 @@
 package main
 
 import (
-	"backend/todo"
 	"fmt"
+	"gateway/todo"
 	"log"
 	"os"
 

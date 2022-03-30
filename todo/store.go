@@ -13,13 +13,3 @@ type SessionStore interface {
 	Revoke(token string) error
 	FindByToken(token string) (userID uuid.UUID, err error)
 }
-
-type TodoStore interface {
-	Add(Todo) (*Todo, error)
-	Delete(todoID uuid.UUID) error
-	Toggle(todoID uuid.UUID, done int) (*Todo, error)
-	UpdateText(todoID uuid.UUID, text string) (*Todo, error)
-
-	FindByID(todoID uuid.UUID) (*Todo, error)
-	FindByUserID(userID uuid.UUID) (*Todos, error)
-}

@@ -16,7 +16,6 @@ import (
 type Service struct {
 	sessionStore SessionStore
 	userStore    UserStore
-	todoStore    TodoStore
 }
 
 func NewService(redisURI string, pgURI string) *Service {
@@ -39,7 +38,6 @@ func NewService(redisURI string, pgURI string) *Service {
 	return &Service{
 		sessionStore: NewSessionStoreRedis(rdb),
 		userStore: NewUserStorePG(pgdb),
-		todoStore: NewTodoStorePG(pgdb),
 	}
 }
 
@@ -73,11 +71,4 @@ func (s *Service) SetupRoute(r gin.IRouter) {
 
 	// User --
 	r.GET("/user", s.GetUserById)
-
-	// Todos --
-	r.POST("/todos", s.CreateTodo)
-	r.GET("/todos", s.GetAllForUser)
-	r.GET("/todos/:id", s.GetTodoById)
-	r.PUT("/todos/:id", s.Update)
-	r.DELETE("/todos/:id", s.Delete)
 }
