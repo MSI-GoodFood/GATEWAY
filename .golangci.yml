@@ -1,0 +1,9 @@
+# .golangci.yml
+
+linters:
+  disable-all: true
+  enable:
+    - goimports
+    - govet
+issues:
+  exclude-use-default: false

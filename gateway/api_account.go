@@ -1,13 +1,25 @@
-package todo
+package gateway
 
 import (
 	"encoding/json"
-	"github.com/gin-gonic/gin"
-	"github.com/gofrs/uuid"
+	"gateway/gateway/models"
 	"io/ioutil"
 	"log"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gofrs/uuid"
 )
 
+// @Summary Register a new user
+// @Tags Account
+// @Success 200 {object} models.JSONResponseSuccess
+// @Failure 404 {object} models.JSONResponseError
+// @Router /signup [post]
+// @Param email body string true "Email du compte"
+// @Param password body string true "Mot de passe"
+// @Param id_role body uuid true "ID du role"
+// @Param id_country body uuid true "ID du pays"
 func (s *Service) Signup(c *gin.Context) {
 
 	body, err := ioutil.ReadAll(c.Request.Body)
@@ -16,7 +28,7 @@ func (s *Service) Signup(c *gin.Context) {
 		return
 	}
 
-	var user User
+	var user models.User
 
 	err = json.Unmarshal(body, &user)
 	if err != nil {
@@ -26,6 +38,8 @@ func (s *Service) Signup(c *gin.Context) {
 
 	id, err := uuid.NewV4()
 	user.ID = id
+	user.Active = true
+	user.CreatedAt = time.Now()
 
 	_, err = s.userStore.FindByEmail(user.Email)
 	if err == nil {
@@ -33,7 +47,8 @@ func (s *Service) Signup(c *gin.Context) {
 		return
 	}
 
- 	log.Println("-- Insert User --")
+	log.Println("-- Insert User --")
+	log.Println(user)
 	_, err = s.userStore.Insert(user)
 	if err != nil {
 		JsonError(c, err.Error())
@@ -48,7 +63,7 @@ func (s *Service) Signup(c *gin.Context) {
 		return
 	}
 
-	JsonSuccess(c, Account{
+	JsonSuccess(c, models.Account{
 		User:  &user,
 		Token: token,
 	})
@@ -56,6 +71,13 @@ func (s *Service) Signup(c *gin.Context) {
 	return
 }
 
+// @Summary Log in an user into application
+// @Tags Account
+// @Success 200 {object} models.JSONResponseSuccess
+// @Failure 404 {object} models.JSONResponseError
+// @Router /login [post]
+// @Param email body string true "Email du compte"
+// @Param password body string true "Mot de passe"
 func (s *Service) Login(c *gin.Context) {
 
 	body, err := ioutil.ReadAll(c.Request.Body)
@@ -64,7 +86,7 @@ func (s *Service) Login(c *gin.Context) {
 		return
 	}
 
-	var user User
+	var user models.User
 
 	err = json.Unmarshal(body, &user)
 	if err != nil {
@@ -85,7 +107,6 @@ func (s *Service) Login(c *gin.Context) {
 	}
 
 	user.ID = data.ID
-
 	token := randomString(20)
 
 	err = s.sessionStore.Add(user.ID, token)
@@ -94,14 +115,19 @@ func (s *Service) Login(c *gin.Context) {
 		return
 	}
 
-	JsonSuccess(c, Account{
-		User: &user,
+	JsonSuccess(c, models.Account{
+		User:  &user,
 		Token: token,
 	})
 
 	return
 }
 
+// @Summary Log out an user
+// @Tags Account
+// @Success 200 {object} models.JSONResponseSuccess
+// @Failure 404 {object} models.JSONResponseError
+// @Router /logout [get]
 func (s *Service) Logout(c *gin.Context) {
 
 	token := GetToken(c)
@@ -119,5 +145,3 @@ func (s *Service) Logout(c *gin.Context) {
 	JsonSuccess(c, nil)
 	return
 }
-
-

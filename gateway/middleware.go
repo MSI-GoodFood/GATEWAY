@@ -1,25 +1,30 @@
-package todo
+package gateway
 
 import (
-	"github.com/gin-gonic/gin"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
-	Signup string = "/signup"
-	Login        = "/login"
-	Logout        = "/logout"
+	Swagger string = "/swagger"
+	Signup 		   = "/signup"
+	Login          = "/login"
+	Logout         = "/logout"
 )
 
 func GetToken(c *gin.Context) string {
 	authHeader := strings.Split(c.GetHeader("Authorization"), "Bearer")
-	if len(authHeader) != 2 { return "" }
+	if len(authHeader) != 2 {
+		return ""
+	}
 	return authHeader[1]
 }
 
 func (s *Service) TokenMiddleware() gin.HandlerFunc {
-	return func (c *gin.Context) {
-		if !strings.Contains(c.Request.RequestURI, Signup) &&
+	return func(c *gin.Context) {
+		if !strings.Contains(c.Request.RequestURI, Swagger) &&
+			!strings.Contains(c.Request.RequestURI, Signup) &&
 			!strings.Contains(c.Request.RequestURI, Login) &&
 			!strings.Contains(c.Request.RequestURI, Logout) {
 			token := GetToken(c)

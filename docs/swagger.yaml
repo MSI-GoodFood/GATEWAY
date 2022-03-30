@@ -1,0 +1,160 @@
+basePath: /v1/
+definitions:
+  models.JSONResponseError:
+    properties:
+      code:
+        type: string
+      error:
+        type: string
+    required:
+    - code
+    type: object
+  models.JSONResponseSuccess:
+    properties:
+      code:
+        type: string
+      data:
+        type: string
+    required:
+    - code
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  title: Good Food Gateway documentation
+  version: 1.0.0
+paths:
+  /login:
+    post:
+      parameters:
+      - description: Email du compte
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: Mot de passe
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.JSONResponseError'
+      summary: Log in an user into application
+      tags:
+      - Account
+  /logout:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.JSONResponseError'
+      summary: Log out an user
+      tags:
+      - Account
+  /signup:
+    post:
+      parameters:
+      - description: Email du compte
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: Mot de passe
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: ID du role
+        in: body
+        name: id_role
+        required: true
+        schema:
+          type: string
+      - description: ID du pays
+        in: body
+        name: id_country
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.JSONResponseError'
+      summary: Register a new user
+      tags:
+      - Account
+  /users:
+    put:
+      parameters:
+      - description: Mot de passe
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: Compte actif
+        in: body
+        name: active
+        required: true
+        schema:
+          type: boolean
+      - description: ID du role
+        in: body
+        name: id_role
+        required: true
+        schema:
+          type: string
+      - description: ID du pays
+        in: body
+        name: id_country
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.JSONResponseError'
+      summary: Update the current user
+      tags:
+      - User
+  /users/:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.JSONResponseError'
+      summary: Get the current user data
+      tags:
+      - User
+swagger: "2.0"

@@ -1,11 +1,12 @@
-package todo
+package gateway
 
 import (
 	"context"
 	"errors"
+	"strings"
+
 	"github.com/go-redis/redis/v8"
 	"github.com/gofrs/uuid"
-	"strings"
 )
 
 type SessionStoreRedis struct {
@@ -24,7 +25,9 @@ func (store SessionStoreRedis) Add(userID uuid.UUID, token string) error {
 		0,
 	).Err()
 
-	if err != nil { return errors.New(err.Error()) }
+	if err != nil {
+		return errors.New(err.Error())
+	}
 	return nil
 }
 
@@ -34,7 +37,9 @@ func (store SessionStoreRedis) Revoke(token string) error {
 		strings.Join(strings.Fields(token), ""),
 	).Err()
 
-	if err != nil { return errors.New(err.Error()) }
+	if err != nil {
+		return errors.New(err.Error())
+	}
 	return nil
 }
 
@@ -45,11 +50,15 @@ func (store SessionStoreRedis) FindByToken(token string) (userID uuid.UUID, err 
 		strings.Join(strings.Fields(token), ""),
 	).Result()
 
-	if err != nil { return uuid.Nil, errors.New(err.Error()) }
+	if err != nil {
+		return uuid.Nil, errors.New(err.Error())
+	}
 
 	userUuid, err := uuid.FromString(id)
 
-	if err != nil { return uuid.Nil, errors.New(err.Error()) }
+	if err != nil {
+		return uuid.Nil, errors.New(err.Error())
+	}
 
 	return userUuid, nil
 }

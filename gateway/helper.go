@@ -1,21 +1,22 @@
-package todo
+package gateway
 
 import (
 	"crypto/rand"
 	"encoding/base64"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func JsonError(c *gin.Context, value string) {
 	c.JSON(http.StatusBadRequest, gin.H{
-		"code" : http.StatusBadRequest,
+		"code":  http.StatusBadRequest,
 		"error": value,
 	})
 }
 func JsonSuccess(c *gin.Context, value interface{}) {
 	c.JSON(http.StatusOK, gin.H{
-		"code" : http.StatusOK,
+		"code": http.StatusOK,
 		"data": value,
 	})
 }
