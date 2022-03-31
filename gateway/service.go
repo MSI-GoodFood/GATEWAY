@@ -6,6 +6,7 @@ import (
 	"gateway/gateway/interface"
 	"gateway/gateway/store"
 	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"io/ioutil"
 	"log"
 	"os"
@@ -14,20 +15,19 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/jackc/pgx/v4/pgxpool"
-
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Service struct {
-	sessionStore _interface.SessionStore
-	userStore    _interface.UserStore
+	sessionStore  _interface.SessionStore
+	userStore     _interface.UserStore
+	userRoleStore _interface.UserRoleStore
 
-	country 	 _interface.CountryEndpoint
-	recipe 		 _interface.RecipeEndpoint
-	recipeType   _interface.RecipeTypeEndpoint
-	service      _interface.ServiceEndpoint
-	orderStatus  _interface.OrderStatusEndpoint
-	shopType     _interface.ShopTypeEndpoint
+	country 	  _interface.CountryEndpoint
+	recipe 		  _interface.RecipeEndpoint
+	recipeType    _interface.RecipeTypeEndpoint
+	service       _interface.ServiceEndpoint
+	orderStatus   _interface.OrderStatusEndpoint
+	shopType      _interface.ShopTypeEndpoint
 }
 
 
@@ -53,14 +53,15 @@ func NewService(redisURI string, pgURI string) *Service {
 	_ = pgdb
 
 	return &Service{
-		sessionStore: store.NewSessionStoreRedis(rdb),
-		userStore:    store.NewUserStorePG(pgdb),
-		country:      store.NewCountryStore(),
-		recipe:       store.NewRecipeStore(),
-		recipeType:   store.NewRecipeTypeStore(),
-		service:      store.NewServiceStore(),
-		orderStatus:  store.NewOrderStatusStore(),
-		shopType:     store.NewShopTypeStore(),
+		sessionStore:  store.NewSessionStoreRedis(rdb),
+		userStore:     store.NewUserStorePG(pgdb),
+		userRoleStore: store.NewUserRoleStorePG(pgdb),
+		country:       store.NewCountryStore(),
+		recipe:        store.NewRecipeStore(),
+		recipeType:    store.NewRecipeTypeStore(),
+		service:       store.NewServiceStore(),
+		orderStatus:   store.NewOrderStatusStore(),
+		shopType:      store.NewShopTypeStore(),
 	}
 }
 
@@ -89,11 +90,11 @@ func (s *Service) SetupRoute(r gin.IRouter) {
 
 	r.Use(s.TokenMiddleware())
 
-	// Account --
-	v1 := r.Group("/v1")
-	{
-		v1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	// Account --
+	v1 := r.Group("/api/v1")
+	{
 		base := v1.Group("/")
 		{
 			base.GET("logout", s.Logout)
@@ -105,6 +106,14 @@ func (s *Service) SetupRoute(r gin.IRouter) {
 		{
 			users.GET("", s.GetCurrentUser)
 			users.PUT("", s.UpdateCurrentUser)
+		}
+
+		userRoles := v1.Group("/userRoles")
+		{
+			userRoles.GET("", s.GetAllUserRole)
+			userRoles.POST("", s.CreateUserRole)
+			userRoles.PUT("", s.UpdateUserRole)
+			userRoles.DELETE("", s.DeleteUserRole)
 		}
 
 		countries := v1.Group("/countries")
@@ -120,7 +129,7 @@ func (s *Service) SetupRoute(r gin.IRouter) {
 			recipes.GET("shops/:id", s.GetAllRecipesForShopById)
 			recipes.GET(":id", s.GetRecipeById)
 			recipes.POST("", s.CreateRecipe)
-			recipes.POST("shops", s.AddRecipeToShopById)
+			recipes.POST("shops/:id", s.AddRecipeToShopById)
 			recipes.PUT(":id", s.UpdateRecipe)
 			recipes.DELETE(":id", s.DeleteRecipe)
 		}

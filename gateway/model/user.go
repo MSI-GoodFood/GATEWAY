@@ -16,11 +16,6 @@ type User struct {
 	Country   uuid.UUID `json:"id_country"`
 }
 
-type UserRole struct {
-	ID    uuid.UUID `json:"id"`
-	Label string    `json:"label" binding:"required"`
-}
-
 type UserUpdate struct {
 	Password string    `json:"password"`
 	Active   bool      `json:"active"`
@@ -28,5 +23,4 @@ type UserUpdate struct {
 	Country  uuid.UUID `json:"id_country"`
 }
 
-type UserRoles []UserRole
 type Users []User

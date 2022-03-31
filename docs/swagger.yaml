@@ -335,20 +335,6 @@ paths:
       summary: Update a recipe
       tags:
       - Recipe
-  /recipes/shops:
-    post:
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.JSONResponseSuccess'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/model.JSONResponseError'
-      summary: Insert a new recipe to a shop
-      tags:
-      - Recipe
   /recipes/shops/{id}:
     get:
       parameters:
@@ -367,6 +353,31 @@ paths:
           schema:
             $ref: '#/definitions/model.JSONResponseError'
       summary: Get all recipes for shop
+      tags:
+      - Recipe
+    post:
+      parameters:
+      - description: ID du restaurant
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: ID de la recette
+        in: body
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Insert a new recipe to a shop
       tags:
       - Recipe
   /services:
@@ -540,6 +551,72 @@ paths:
       summary: Register a new user
       tags:
       - Account
+  /userRole/{id}:
+    delete:
+      parameters:
+      - description: ID du role
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Delete a user role
+      tags:
+      - UserRole
+    put:
+      parameters:
+      - description: ID du role
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Update a user role
+      tags:
+      - UserRole
+  /userRoles:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Get all user role
+      tags:
+      - UserRole
+    post:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Create a user role
+      tags:
+      - UserRole
   /users:
     get:
       responses:

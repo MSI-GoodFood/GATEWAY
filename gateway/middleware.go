@@ -31,6 +31,23 @@ func (s *Service) GetUserByToken(c *gin.Context) uuid.UUID {
 	return userUUID
 }
 
+func (s *Service) GetIdFromPath(c *gin.Context) uuid.UUID {
+	var id = c.Param("id")
+	if id == "" {
+		JsonError(c, "id empty")
+		return uuid.Nil
+	}
+
+	newUUID, err := uuid.FromString(id)
+
+	if err != nil {
+		JsonError(c, "wrong id")
+		return uuid.Nil
+	}
+
+	return newUUID
+}
+
 
 func GetToken(c *gin.Context) string {
 	authHeader := strings.Split(c.GetHeader("Authorization"), "Bearer")

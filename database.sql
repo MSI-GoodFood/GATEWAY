@@ -12,3 +12,9 @@ CREATE TABLE IF NOT EXISTS "User"
     "id_role" uuid NOT NULL,
     "id_country" uuid NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS "UserRole"
+(
+    "id" uuid PRIMARY KEY,
+    "label" varchar UNIQUE NOT NULL
+);

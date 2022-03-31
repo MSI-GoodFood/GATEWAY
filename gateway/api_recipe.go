@@ -84,7 +84,9 @@ func (s *Service) CreateRecipe(c *gin.Context) {
 // @Tags Recipe
 // @Success 200 {object} model.JSONResponseSuccess
 // @Failure 404 {object} model.JSONResponseError
-// @Router /recipes/shops [post]
+// @Router /recipes/shops/{id} [post]
+// @Param id path string true "ID du restaurant"
+// @Param id body string true "ID de la recette"
 func (s *Service) AddRecipeToShopById(c *gin.Context) {
 
 	userUuid := s.GetUserByToken(c)

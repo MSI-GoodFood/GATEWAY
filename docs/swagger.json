@@ -400,12 +400,21 @@
                 }
             }
         },
-        "/recipes/shops": {
-            "post": {
+        "/recipes/shops/{id}": {
+            "get": {
                 "tags": [
                     "Recipe"
                 ],
-                "summary": "Insert a new recipe to a shop",
+                "summary": "Get all recipes for shop",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du shop",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -420,21 +429,28 @@
                         }
                     }
                 }
-            }
-        },
-        "/recipes/shops/{id}": {
-            "get": {
+            },
+            "post": {
                 "tags": [
                     "Recipe"
                 ],
-                "summary": "Get all recipes for shop",
+                "summary": "Insert a new recipe to a shop",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "ID du shop",
+                        "description": "ID du restaurant",
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "ID de la recette",
+                        "name": "id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -790,6 +806,108 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/userRole/{id}": {
+            "put": {
+                "tags": [
+                    "UserRole"
+                ],
+                "summary": "Update a user role",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du role",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "UserRole"
+                ],
+                "summary": "Delete a user role",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du role",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/userRoles": {
+            "get": {
+                "tags": [
+                    "UserRole"
+                ],
+                "summary": "Get all user role",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "UserRole"
+                ],
+                "summary": "Create a user role",
                 "responses": {
                     "200": {
                         "description": "OK",

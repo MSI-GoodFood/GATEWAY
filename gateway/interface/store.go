@@ -13,6 +13,13 @@ type UserStore interface {
 	UpdateUser(idUser uuid.UUID, body model.UserUpdate) (*model.User, error)
 }
 
+type UserRoleStore interface {
+	GetAllUserRole() (*model.UserRoles, error)
+	CreateUserRole(user model.UserRole) (*model.UserRole, error)
+	UpdateUserRole(idUserRole uuid.UUID, body model.UserRoleUpdate) (*model.UserRole, error)
+	DeleteUserRole(idUserRole uuid.UUID) error
+}
+
 type SessionStore interface {
 	GetUserByToken(token string) (userID uuid.UUID, err error)
 	AddToken(idUser uuid.UUID, token string) error
