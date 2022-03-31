@@ -182,6 +182,108 @@ const docTemplate = `{
                 }
             }
         },
+        "/orderStatus": {
+            "get": {
+                "tags": [
+                    "OrderStatus"
+                ],
+                "summary": "Get all order status",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "OrderStatus"
+                ],
+                "summary": "Create a new order status",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/orderStatus/{id}": {
+            "put": {
+                "tags": [
+                    "OrderStatus"
+                ],
+                "summary": "Update a order status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du status d'une commande",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "OrderStatus"
+                ],
+                "summary": "Delete an order status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du status d'une commande",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/recipeTypes": {
             "get": {
                 "tags": [
@@ -427,6 +529,210 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "ID de la recette",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/services": {
+            "get": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "Get all service",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "Create a new service",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/services/{id}": {
+            "put": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "Update a service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du service",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "Delete a service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du service",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/shopType": {
+            "get": {
+                "tags": [
+                    "ShopType"
+                ],
+                "summary": "Get all shop type",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "ShopType"
+                ],
+                "summary": "Create a new shop type",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/shopType/{id}": {
+            "put": {
+                "tags": [
+                    "ShopType"
+                ],
+                "summary": "Update a shop type",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du type de restaurant",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "ShopType"
+                ],
+                "summary": "Delete an shop type",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du type de restaurant",
                         "name": "id",
                         "in": "path",
                         "required": true

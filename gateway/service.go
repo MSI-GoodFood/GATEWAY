@@ -25,6 +25,9 @@ type Service struct {
 	country 	 _interface.CountryEndpoint
 	recipe 		 _interface.RecipeEndpoint
 	recipeType   _interface.RecipeTypeEndpoint
+	service      _interface.ServiceEndpoint
+	orderStatus  _interface.OrderStatusEndpoint
+	shopType     _interface.ShopTypeEndpoint
 }
 
 
@@ -55,6 +58,9 @@ func NewService(redisURI string, pgURI string) *Service {
 		country:      store.NewCountryStore(),
 		recipe:       store.NewRecipeStore(),
 		recipeType:   store.NewRecipeTypeStore(),
+		service:      store.NewServiceStore(),
+		orderStatus:  store.NewOrderStatusStore(),
+		shopType:     store.NewShopTypeStore(),
 	}
 }
 
@@ -125,6 +131,30 @@ func (s *Service) SetupRoute(r gin.IRouter) {
 			recipeTypes.POST("", s.CreateRecipeType)
 			recipeTypes.PUT(":id", s.UpdateRecipeType)
 			recipeTypes.DELETE(":id", s.DeleteRecipeType)
+		}
+
+		services := v1.Group("/services")
+		{
+			services.GET("", s.GetAllService)
+			services.POST("", s.CreateService)
+			services.PUT(":id", s.UpdateService)
+			services.DELETE(":id", s.DeleteService)
+		}
+
+		orderStatus := v1.Group("/orderStatus")
+		{
+			orderStatus.GET("", s.GetAllOrderStatus)
+			orderStatus.POST("", s.CreateOrderStatus)
+			orderStatus.PUT(":id", s.UpdateOrderStatus)
+			orderStatus.DELETE(":id", s.DeleteOrderStatus)
+		}
+
+		shopType := v1.Group("/shopTypes")
+		{
+			shopType.GET("", s.GetAllShopType)
+			shopType.POST("", s.CreateShopType)
+			shopType.PUT(":id", s.UpdateShopType)
+			shopType.DELETE(":id", s.DeleteShopType)
 		}
 	}
 }

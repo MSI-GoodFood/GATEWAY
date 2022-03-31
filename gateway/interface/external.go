@@ -26,3 +26,24 @@ type RecipeTypeEndpoint interface {
 	UpdateRecipeType(idRecipeType uuid.UUID, body interface{}) (*interface{}, error)
 	DeleteRecipeType(idRecipeType uuid.UUID) error
 }
+
+type ServiceEndpoint interface {
+	GetAllService() (*interface{}, error)
+	CreateService(body interface{}) (*interface{}, error)
+	UpdateService(idService uuid.UUID, body interface{}) (*interface{}, error)
+	DeleteService(idService uuid.UUID) error
+}
+
+type ShopTypeEndpoint interface {
+	GetAllShopType() (*interface{}, error)
+	CreateShopType(body interface{}) (*interface{}, error)
+	UpdateShopType(idShopType uuid.UUID, body interface{}) (*interface{}, error)
+	DeleteShopType(idShopType uuid.UUID) error
+}
+
+type OrderStatusEndpoint interface {
+	GetAllOrderStatus() (*interface{}, error)
+	CreateOrderStatus(body interface{}) (*interface{}, error)
+	UpdateOrderStatus(idOrderStatus uuid.UUID, body interface{}) (*interface{}, error)
+	DeleteOrderStatus(idOrderStatus uuid.UUID) error
+}
