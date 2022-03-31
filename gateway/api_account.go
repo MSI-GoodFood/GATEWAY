@@ -2,12 +2,11 @@ package gateway
 
 import (
 	"encoding/json"
-	"gateway/gateway/model"
-	"io/ioutil"
-	"time"
-
+	"github.com/MSI-GoodFood/GATEWAY/gateway/model"
 	"github.com/gin-gonic/gin"
 	"github.com/gofrs/uuid"
+	"io/ioutil"
+	"time"
 )
 
 // @Summary Register a new user

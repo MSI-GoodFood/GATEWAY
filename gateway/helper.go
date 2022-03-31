@@ -3,9 +3,8 @@ package gateway
 import (
 	"crypto/rand"
 	"encoding/base64"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func JsonError(c *gin.Context, value string) {

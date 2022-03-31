@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 	"errors"
-	"gateway/gateway/model"
+	"github.com/MSI-GoodFood/GATEWAY/gateway/model"
 
 	"github.com/gofrs/uuid"
 	"github.com/jackc/pgx/v4/pgxpool"

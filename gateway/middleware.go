@@ -1,10 +1,9 @@
 package gateway
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/gofrs/uuid"
 	"strings"
-
-	"github.com/gin-gonic/gin"
 )
 
 const (

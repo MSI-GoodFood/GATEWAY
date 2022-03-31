@@ -1,13 +1,17 @@
-module gateway
+module github.com/MSI-GoodFood/GATEWAY
 
-go 1.13
+go 1.14
+
+replace (
+  github.com/MSI-GoodFood/GATEWAY => github.com/MSI-GoodFood/GATEWAY latest
+)
 
 require (
-	github.com/gin-gonic/gin v1.7.7
-	github.com/go-redis/redis/v8 v8.11.4
-	github.com/gofrs/uuid v4.2.0+incompatible
-	github.com/jackc/pgx/v4 v4.15.0
-	github.com/joho/godotenv v1.4.0
+	github.com/gin-gonic/gin v1.7.7 // indirect
+	github.com/go-redis/redis/v8 v8.11.4 // indirect
+	github.com/gofrs/uuid v4.2.0+incompatible // indirect
+	github.com/jackc/pgx/v4 v4.15.0 // indirect
+	github.com/joho/godotenv v1.4.0 // indirect
 )
 
 require (

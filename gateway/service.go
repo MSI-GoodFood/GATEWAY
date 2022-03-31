@@ -3,18 +3,17 @@ package gateway
 import (
 	"context"
 	"fmt"
-	"gateway/gateway/interface"
-	"gateway/gateway/store"
+	"github.com/MSI-GoodFood/GATEWAY/gateway/interface"
+	"github.com/MSI-GoodFood/GATEWAY/gateway/store"
+	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
+	"github.com/jackc/pgx/v4/pgxpool"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
-
-	"github.com/gin-gonic/gin"
-	"github.com/go-redis/redis/v8"
-	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 type Service struct {

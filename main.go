@@ -7,14 +7,14 @@ package main
 
 import (
 	"fmt"
-	"gateway/gateway"
+	"github.com/MSI-GoodFood/GATEWAY/gateway"
 	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
-	_ "gateway/docs"
+	_ "github.com/MSI-GoodFood/GATEWAY/docs"
 )
 
 func main() {

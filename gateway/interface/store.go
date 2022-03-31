@@ -1,7 +1,7 @@
 package _interface
 
 import (
-	"gateway/gateway/model"
+	"github.com/MSI-GoodFood/GATEWAY/gateway/model"
 
 	"github.com/gofrs/uuid"
 )

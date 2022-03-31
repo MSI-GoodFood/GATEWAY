@@ -2,11 +2,10 @@ package gateway
 
 import (
 	"encoding/json"
-	"gateway/gateway/model"
+	"github.com/MSI-GoodFood/GATEWAY/gateway/model"
+	"github.com/gin-gonic/gin"
 	"github.com/gofrs/uuid"
 	"io/ioutil"
-
-	"github.com/gin-gonic/gin"
 )
 
 // @Summary Get the current user data
