@@ -1,6 +1,7 @@
 package gateway
 
 import (
+	"github.com/gofrs/uuid"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -12,6 +13,24 @@ const (
 	Login          = "/login"
 	Logout         = "/logout"
 )
+
+func (s *Service) GetUserByToken(c *gin.Context) uuid.UUID {
+	token := GetToken(c)
+	if token == "" {
+		JsonError(c, "Error while getting token")
+		return uuid.Nil
+	}
+
+	userUUID, err := s.sessionStore.GetUserByToken(token)
+
+	if err != nil {
+		JsonError(c, "wrong id")
+		return uuid.Nil
+	}
+
+	return userUUID
+}
+
 
 func GetToken(c *gin.Context) string {
 	authHeader := strings.Split(c.GetHeader("Authorization"), "Bearer")
@@ -34,7 +53,7 @@ func (s *Service) TokenMiddleware() gin.HandlerFunc {
 				return
 			}
 
-			_, err := s.sessionStore.FindByToken(token)
+			_, err := s.sessionStore.GetUserByToken(token)
 			if err != nil {
 				JsonError(c, err.Error())
 				c.Abort()

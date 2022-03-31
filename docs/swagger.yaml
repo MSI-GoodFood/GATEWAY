@@ -1,6 +1,6 @@
 basePath: /v1/
 definitions:
-  models.JSONResponseError:
+  model.JSONResponseError:
     properties:
       code:
         type: string
@@ -9,7 +9,7 @@ definitions:
     required:
     - code
     type: object
-  models.JSONResponseSuccess:
+  model.JSONResponseSuccess:
     properties:
       code:
         type: string
@@ -24,6 +24,72 @@ info:
   title: Good Food Gateway documentation
   version: 1.0.0
 paths:
+  /countries:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Get all countries
+      tags:
+      - Country
+    post:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Create a new country
+      tags:
+      - Country
+  /countries/{id}:
+    delete:
+      parameters:
+      - description: ID du pays
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Delete a country
+      tags:
+      - Country
+    put:
+      parameters:
+      - description: ID du pays
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Update a country
+      tags:
+      - Country
   /login:
     post:
       parameters:
@@ -43,11 +109,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.JSONResponseSuccess'
+            $ref: '#/definitions/model.JSONResponseSuccess'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/models.JSONResponseError'
+            $ref: '#/definitions/model.JSONResponseError'
       summary: Log in an user into application
       tags:
       - Account
@@ -57,14 +123,186 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.JSONResponseSuccess'
+            $ref: '#/definitions/model.JSONResponseSuccess'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/models.JSONResponseError'
+            $ref: '#/definitions/model.JSONResponseError'
       summary: Log out an user
       tags:
       - Account
+  /recipeTypes:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Get all recipe type
+      tags:
+      - RecipeType
+    post:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Create a new recipe type
+      tags:
+      - RecipeType
+  /recipeTypes/{id}:
+    delete:
+      parameters:
+      - description: ID du type de recette
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Delete a recipe type
+      tags:
+      - RecipeType
+    put:
+      parameters:
+      - description: ID du type de recette
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Update a recipe type
+      tags:
+      - RecipeType
+  /recipes:
+    post:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Create a new recipe
+      tags:
+      - Recipe
+  /recipes/{id}:
+    delete:
+      parameters:
+      - description: ID de la recette
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Delete a recipe
+      tags:
+      - Recipe
+    get:
+      parameters:
+      - description: ID de la recette
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Get recipe by id
+      tags:
+      - Recipe
+    put:
+      parameters:
+      - description: ID de la recette
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Update a recipe
+      tags:
+      - Recipe
+  /recipes/shops:
+    post:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Insert a new recipe to a shop
+      tags:
+      - Recipe
+  /recipes/shops/{id}:
+    get:
+      parameters:
+      - description: ID du shop
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Get all recipes for shop
+      tags:
+      - Recipe
   /signup:
     post:
       parameters:
@@ -96,15 +334,28 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.JSONResponseSuccess'
+            $ref: '#/definitions/model.JSONResponseSuccess'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/models.JSONResponseError'
+            $ref: '#/definitions/model.JSONResponseError'
       summary: Register a new user
       tags:
       - Account
   /users:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JSONResponseSuccess'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.JSONResponseError'
+      summary: Get the current user data
+      tags:
+      - User
     put:
       parameters:
       - description: Mot de passe
@@ -135,26 +386,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.JSONResponseSuccess'
+            $ref: '#/definitions/model.JSONResponseSuccess'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/models.JSONResponseError'
+            $ref: '#/definitions/model.JSONResponseError'
       summary: Update the current user
-      tags:
-      - User
-  /users/:
-    get:
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.JSONResponseSuccess'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/models.JSONResponseError'
-      summary: Get the current user data
       tags:
       - User
 swagger: "2.0"

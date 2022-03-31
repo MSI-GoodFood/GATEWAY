@@ -3,6 +3,8 @@ package gateway
 import (
 	"context"
 	"fmt"
+	"gateway/gateway/interface"
+	"gateway/gateway/store"
 	swaggerFiles "github.com/swaggo/files"
 	"io/ioutil"
 	"log"
@@ -13,14 +15,18 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/jackc/pgx/v4/pgxpool"
 
-
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Service struct {
-	sessionStore SessionStore
-	userStore    UserStore
+	sessionStore _interface.SessionStore
+	userStore    _interface.UserStore
+
+	country 	 _interface.CountryEndpoint
+	recipe 		 _interface.RecipeEndpoint
+	recipeType   _interface.RecipeTypeEndpoint
 }
+
 
 func NewService(redisURI string, pgURI string) *Service {
 	rdb := redis.NewClient(&redis.Options{
@@ -44,8 +50,11 @@ func NewService(redisURI string, pgURI string) *Service {
 	_ = pgdb
 
 	return &Service{
-		sessionStore: NewSessionStoreRedis(rdb),
-		userStore:    NewUserStorePG(pgdb),
+		sessionStore: store.NewSessionStoreRedis(rdb),
+		userStore:    store.NewUserStorePG(pgdb),
+		country:      store.NewCountryStore(),
+		recipe:       store.NewRecipeStore(),
+		recipeType:   store.NewRecipeTypeStore(),
 	}
 }
 
@@ -61,23 +70,18 @@ func initDatabase(dbPool *pgxpool.Pool) {
 	fmt.Println("init database -- gonna read file")
 
 	file, err := ioutil.ReadFile("./database.sql")
-	if err != nil {
-		log.Fatal(err)
-	}
+	if err != nil { log.Fatal(err) }
 
 	requests := strings.Split(string(file), ";\n")
 	for _, request := range requests {
 		_, err := dbPool.Exec(context.Background(), request)
-		if err != nil {
-			log.Fatal(err)
-		}
+		if err != nil { log.Fatal(err) }
 	}
 }
 
 func (s *Service) SetupRoute(r gin.IRouter) {
 
 	r.Use(s.TokenMiddleware())
-
 
 	// Account --
 	v1 := r.Group("/v1")
@@ -86,15 +90,41 @@ func (s *Service) SetupRoute(r gin.IRouter) {
 
 		base := v1.Group("/")
 		{
+			base.GET("logout", s.Logout)
 			base.POST("signup", s.Signup)
 			base.POST("login", s.Login)
-			base.GET("logout", s.Logout)
 		}
 
 		users := v1.Group("/user")
 		{
 			users.GET("", s.GetCurrentUser)
 			users.PUT("", s.UpdateCurrentUser)
+		}
+
+		countries := v1.Group("/countries")
+		{
+			countries.GET("", s.GetAllCountries)
+			countries.POST("", s.CreateCountry)
+			countries.DELETE(":id", s.DeleteCountry)
+			countries.PUT("", s.UpdateCountry)
+		}
+
+		recipes := v1.Group("/recipes")
+		{
+			recipes.GET("shops/:id", s.GetAllRecipesForShopById)
+			recipes.GET(":id", s.GetRecipeById)
+			recipes.POST("", s.CreateRecipe)
+			recipes.POST("shops", s.AddRecipeToShopById)
+			recipes.PUT(":id", s.UpdateRecipe)
+			recipes.DELETE(":id", s.DeleteRecipe)
+		}
+
+		recipeTypes := v1.Group("/recipeTypes")
+		{
+			recipeTypes.GET("", s.GetAllRecipesType)
+			recipeTypes.POST("", s.CreateRecipeType)
+			recipeTypes.PUT(":id", s.UpdateRecipeType)
+			recipeTypes.DELETE(":id", s.DeleteRecipeType)
 		}
 	}
 }

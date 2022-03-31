@@ -2,9 +2,8 @@ package gateway
 
 import (
 	"encoding/json"
-	"gateway/gateway/models"
+	"gateway/gateway/model"
 	"io/ioutil"
-	"log"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -13,8 +12,8 @@ import (
 
 // @Summary Register a new user
 // @Tags Account
-// @Success 200 {object} models.JSONResponseSuccess
-// @Failure 404 {object} models.JSONResponseError
+// @Success 200 {object} model.JSONResponseSuccess
+// @Failure 404 {object} model.JSONResponseError
 // @Router /signup [post]
 // @Param email body string true "Email du compte"
 // @Param password body string true "Mot de passe"
@@ -28,7 +27,7 @@ func (s *Service) Signup(c *gin.Context) {
 		return
 	}
 
-	var user models.User
+	var user model.User
 
 	err = json.Unmarshal(body, &user)
 	if err != nil {
@@ -41,15 +40,13 @@ func (s *Service) Signup(c *gin.Context) {
 	user.Active = true
 	user.CreatedAt = time.Now()
 
-	_, err = s.userStore.FindByEmail(user.Email)
+	_, err = s.userStore.GetUserByEmail(user.Email)
 	if err == nil {
 		JsonError(c, "email already exist")
 		return
 	}
 
-	log.Println("-- Insert User --")
-	log.Println(user)
-	_, err = s.userStore.Insert(user)
+	_, err = s.userStore.CreateUser(user)
 	if err != nil {
 		JsonError(c, err.Error())
 		return
@@ -57,13 +54,13 @@ func (s *Service) Signup(c *gin.Context) {
 
 	token := randomString(20)
 
-	err = s.sessionStore.Add(user.ID, token)
+	err = s.sessionStore.AddToken(user.ID, token)
 	if err != nil {
 		JsonError(c, err.Error())
 		return
 	}
 
-	JsonSuccess(c, models.Account{
+	JsonSuccess(c, model.Account{
 		User:  &user,
 		Token: token,
 	})
@@ -73,8 +70,8 @@ func (s *Service) Signup(c *gin.Context) {
 
 // @Summary Log in an user into application
 // @Tags Account
-// @Success 200 {object} models.JSONResponseSuccess
-// @Failure 404 {object} models.JSONResponseError
+// @Success 200 {object} model.JSONResponseSuccess
+// @Failure 404 {object} model.JSONResponseError
 // @Router /login [post]
 // @Param email body string true "Email du compte"
 // @Param password body string true "Mot de passe"
@@ -86,7 +83,7 @@ func (s *Service) Login(c *gin.Context) {
 		return
 	}
 
-	var user models.User
+	var user model.User
 
 	err = json.Unmarshal(body, &user)
 	if err != nil {
@@ -99,7 +96,7 @@ func (s *Service) Login(c *gin.Context) {
 		return
 	}
 
-	data, err := s.userStore.FindByEmail(user.Email)
+	data, err := s.userStore.GetUserByEmail(user.Email)
 
 	if err != nil {
 		JsonError(c, "account not found")
@@ -109,13 +106,13 @@ func (s *Service) Login(c *gin.Context) {
 	user.ID = data.ID
 	token := randomString(20)
 
-	err = s.sessionStore.Add(user.ID, token)
+	err = s.sessionStore.AddToken(user.ID, token)
 	if err != nil {
 		JsonError(c, err.Error())
 		return
 	}
 
-	JsonSuccess(c, models.Account{
+	JsonSuccess(c, model.Account{
 		User:  &user,
 		Token: token,
 	})
@@ -125,8 +122,8 @@ func (s *Service) Login(c *gin.Context) {
 
 // @Summary Log out an user
 // @Tags Account
-// @Success 200 {object} models.JSONResponseSuccess
-// @Failure 404 {object} models.JSONResponseError
+// @Success 200 {object} model.JSONResponseSuccess
+// @Failure 404 {object} model.JSONResponseError
 // @Router /logout [get]
 func (s *Service) Logout(c *gin.Context) {
 
@@ -136,7 +133,7 @@ func (s *Service) Logout(c *gin.Context) {
 		return
 	}
 
-	err := s.sessionStore.Revoke(token)
+	err := s.sessionStore.RevokeToken(token)
 	if err != nil {
 		JsonError(c, "Already logout")
 		return

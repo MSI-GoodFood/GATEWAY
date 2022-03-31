@@ -19,9 +19,7 @@ import (
 
 func main() {
 	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	if err != nil { log.Fatal("Error loading .env file") }
 
 	s := gateway.NewService(os.Getenv("REDIS_URI"), os.Getenv("POSTGRESQL_URI"))
 

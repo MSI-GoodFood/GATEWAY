@@ -16,6 +16,108 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/countries": {
+            "get": {
+                "tags": [
+                    "Country"
+                ],
+                "summary": "Get all countries",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Country"
+                ],
+                "summary": "Create a new country",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/countries/{id}": {
+            "put": {
+                "tags": [
+                    "Country"
+                ],
+                "summary": "Update a country",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du pays",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Country"
+                ],
+                "summary": "Delete a country",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du pays",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "tags": [
@@ -46,13 +148,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.JSONResponseSuccess"
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/models.JSONResponseError"
+                            "$ref": "#/definitions/model.JSONResponseError"
                         }
                     }
                 }
@@ -68,13 +170,279 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.JSONResponseSuccess"
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/models.JSONResponseError"
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/recipeTypes": {
+            "get": {
+                "tags": [
+                    "RecipeType"
+                ],
+                "summary": "Get all recipe type",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "RecipeType"
+                ],
+                "summary": "Create a new recipe type",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/recipeTypes/{id}": {
+            "put": {
+                "tags": [
+                    "RecipeType"
+                ],
+                "summary": "Update a recipe type",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du type de recette",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "RecipeType"
+                ],
+                "summary": "Delete a recipe type",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du type de recette",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/recipes": {
+            "post": {
+                "tags": [
+                    "Recipe"
+                ],
+                "summary": "Create a new recipe",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/recipes/shops": {
+            "post": {
+                "tags": [
+                    "Recipe"
+                ],
+                "summary": "Insert a new recipe to a shop",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/recipes/shops/{id}": {
+            "get": {
+                "tags": [
+                    "Recipe"
+                ],
+                "summary": "Get all recipes for shop",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID du shop",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/recipes/{id}": {
+            "get": {
+                "tags": [
+                    "Recipe"
+                ],
+                "summary": "Get recipe by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de la recette",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Recipe"
+                ],
+                "summary": "Update a recipe",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de la recette",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Recipe"
+                ],
+                "summary": "Delete a recipe",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID de la recette",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
                         }
                     }
                 }
@@ -128,19 +496,39 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.JSONResponseSuccess"
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/models.JSONResponseError"
+                            "$ref": "#/definitions/model.JSONResponseError"
                         }
                     }
                 }
             }
         },
         "/users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get the current user data",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.JSONResponseError"
+                        }
+                    }
+                }
+            },
             "put": {
                 "tags": [
                     "User"
@@ -188,35 +576,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.JSONResponseSuccess"
+                            "$ref": "#/definitions/model.JSONResponseSuccess"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/models.JSONResponseError"
-                        }
-                    }
-                }
-            }
-        },
-        "/users/": {
-            "get": {
-                "tags": [
-                    "User"
-                ],
-                "summary": "Get the current user data",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONResponseSuccess"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/models.JSONResponseError"
+                            "$ref": "#/definitions/model.JSONResponseError"
                         }
                     }
                 }
@@ -224,7 +590,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.JSONResponseError": {
+        "model.JSONResponseError": {
             "type": "object",
             "required": [
                 "code"
@@ -238,7 +604,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.JSONResponseSuccess": {
+        "model.JSONResponseSuccess": {
             "type": "object",
             "required": [
                 "code"

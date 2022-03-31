@@ -1,4 +1,4 @@
-package models
+package model
 
 type JSONResponseError struct {
 	Code  string `json:"code" binding:"required"`
