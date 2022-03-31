@@ -2,7 +2,7 @@ package main
 
 // @title Good Food Gateway documentation
 // @version 1.0.0
-// @host localhost:8000
+// @host localhost:8080
 // @BasePath /v1/
 
 import (
