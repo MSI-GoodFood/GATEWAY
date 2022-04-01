@@ -3,4 +3,4 @@ build:
     web: Dockerfile
 
 run:
-  web: ./gateway
+  web: bash ./gateway
