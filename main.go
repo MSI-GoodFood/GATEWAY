@@ -9,7 +9,6 @@ import (
 	_ "github.com/MSI-GoodFood/GATEWAY/_docs"
 	"github.com/MSI-GoodFood/GATEWAY/gateway"
 
-	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -17,10 +16,9 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil { log.Fatal("Error loading .env file") }
+	_ = godotenv.Load()
 
-	s := gateway.NewService(os.Getenv("REDIS_URI"), os.Getenv("POSTGRESQL_URI"))
+	s := gateway.NewService(os.Getenv("REDIS_URL"), os.Getenv("DATABASE_URL"))
 
 	g := gin.Default()
 	s.SetupRoute(g)

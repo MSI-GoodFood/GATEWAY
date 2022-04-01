@@ -76,7 +76,7 @@ func initDatabase(dbPool *pgxpool.Pool) {
 	fmt.Println("init database -- gonna read file")
 
 	file, err := ioutil.ReadFile("./database.sql")
-	if err != nil { log.Fatal(err) }
+	if err != nil { log.Println(err) }
 
 	requests := strings.Split(string(file), ";\n")
 	for _, request := range requests {

@@ -1,17 +1,36 @@
-FROM golang:1.18-alpine AS builder
-RUN apk update
-RUN apk add git
-RUN mkdir /build
-ADD . /build
+FROM golang:alpine as builder
+
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64
+
+LABEL maintainer="GALLIER Thomas"
+
+RUN apk update && apk add --no-cache git
+
 WORKDIR /build
+
+COPY go.mod go.sum ./
+
 RUN go mod download
-RUN go build -o main .
 
-FROM alpine
-RUN adduser -S -D -H -h /app appuser
-USER appuser
-COPY --from=builder /build/gateway /app/
-COPY gateway/ /app/gateway
-WORKDIR /app
+COPY . .
 
-CMD ["sh", "./gateway"]
+RUN go mod tidy
+
+RUN go build -a -installsuffix cgo -o main .
+
+WORKDIR /dist
+
+RUN cp /build/main .
+
+FROM alpine:latest
+
+COPY --from=builder /dist/main /
+
+EXPOSE 8080 8080
+
+CMD ["/bin/sh"]
+
+ENTRYPOINT ["/main"]
