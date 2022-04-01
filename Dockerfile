@@ -1,8 +1,17 @@
-FROM golang:1.14.9-alpine
-RUN apk update && apk add git && go get gopkg.in/natefinch/lumberjack.v2
-EXPOSE 8080
-
+FROM golang:1.18-alpine AS builder
+RUN apk update
+RUN apk add git
 RUN mkdir /build
-ADD go.mod go.sum main.go /build/
+ADD . /build
 WORKDIR /build
-RUN go build -o build
+RUN go mod download
+RUN go build -o main .
+
+FROM alpine
+RUN adduser -S -D -H -h /app appuser
+USER appuser
+COPY --from=builder /build/gateway /app/
+COPY gateway/ /app/gateway
+WORKDIR /app
+
+CMD ["sh", "./gateway"]

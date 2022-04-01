@@ -6,7 +6,7 @@
         "version": "1.0.0"
     },
     "host": "localhost:8080",
-    "basePath": "/v1/",
+    "basePath": "/api/v1/",
     "paths": {
         "/countries": {
             "get": {
@@ -403,7 +403,7 @@
         "/recipes/shops/{id}": {
             "get": {
                 "tags": [
-                    "Recipe"
+                    "RecipeAAAAAAA"
                 ],
                 "summary": "Get all recipes for shop",
                 "parameters": [

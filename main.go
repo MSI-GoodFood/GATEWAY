@@ -3,18 +3,17 @@ package main
 // @title Good Food Gateway documentation
 // @version 1.0.0
 // @host localhost:8080
-// @BasePath /v1/
+// @BasePath /api/v1/
 
 import (
-	"fmt"
+	_ "github.com/MSI-GoodFood/GATEWAY/_docs"
 	"github.com/MSI-GoodFood/GATEWAY/gateway"
+
 	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-
-	_ "github.com/MSI-GoodFood/GATEWAY/docs"
 )
 
 func main() {
@@ -26,6 +25,5 @@ func main() {
 	g := gin.Default()
 	s.SetupRoute(g)
 
-	port := os.Getenv("PORT")
-	g.Run(fmt.Sprint(":", port))
+	g.Run()
 }

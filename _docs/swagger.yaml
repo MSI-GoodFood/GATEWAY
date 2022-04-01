@@ -1,4 +1,4 @@
-basePath: /v1/
+basePath: /api/v1/
 definitions:
   model.JSONResponseError:
     properties:
@@ -354,7 +354,7 @@ paths:
             $ref: '#/definitions/model.JSONResponseError'
       summary: Get all recipes for shop
       tags:
-      - Recipe
+      - RecipeAAAAAAA
     post:
       parameters:
       - description: ID du restaurant
