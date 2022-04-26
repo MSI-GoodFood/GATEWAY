@@ -7,7 +7,7 @@ import (
 )
 
 // @Summary Get all recipes for shop
-// @Tags RecipeAAAAAAA
+// @Tags Recipe
 // @Success 200 {object} model.JSONResponseSuccess
 // @Failure 404 {object} model.JSONResponseError
 // @Router /recipes/shops/{id} [get]

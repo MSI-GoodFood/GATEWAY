@@ -354,7 +354,7 @@ paths:
             $ref: '#/definitions/model.JSONResponseError'
       summary: Get all recipes for shop
       tags:
-      - RecipeAAAAAAA
+      - Recipe
     post:
       parameters:
       - description: ID du restaurant

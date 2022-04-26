@@ -6,7 +6,7 @@ package main
 // @BasePath /api/v1/
 
 import (
-	_ "github.com/MSI-GoodFood/GATEWAY/_docs"
+	_ "github.com/MSI-GoodFood/GATEWAY/docs"
 	"github.com/MSI-GoodFood/GATEWAY/gateway"
 	"google.golang.org/grpc"
 	"log"

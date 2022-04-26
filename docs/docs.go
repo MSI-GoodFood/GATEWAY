@@ -411,7 +411,7 @@ const docTemplate = `{
         "/recipes/shops/{id}": {
             "get": {
                 "tags": [
-                    "RecipeAAAAAAA"
+                    "Recipe"
                 ],
                 "summary": "Get all recipes for shop",
                 "parameters": [
