@@ -2,7 +2,7 @@ module github.com/MSI-GoodFood/GATEWAY
 
 go 1.14
 
-replace github.com/MSI-GoodFood/GATEWAY => github.com/MSI-GoodFood/GATEWAY latest
+replace github.com/MSI-GoodFood/GATEWAY => github.com/MSI-GoodFood/GATEWAY v0.0.0-20220401135756-2f3cb5b84ce2
 
 require (
 	github.com/gin-gonic/gin v1.7.7
@@ -21,4 +21,6 @@ require (
 	golang.org/x/net v0.0.0-20220325170049-de3da57026de // indirect
 	golang.org/x/sys v0.0.0-20220330033206-e17cdc41300f // indirect
 	golang.org/x/tools v0.1.10 // indirect
+	google.golang.org/grpc v1.46.0
+	google.golang.org/protobuf v1.27.1
 )

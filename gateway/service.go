@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"github.com/MSI-GoodFood/GATEWAY/gateway/interface"
 	"github.com/MSI-GoodFood/GATEWAY/gateway/store"
+	service "github.com/MSI-GoodFood/GATEWAY/proto"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/jackc/pgx/v4/pgxpool"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"google.golang.org/grpc"
 	"io/ioutil"
 	"log"
 	"os"
@@ -21,6 +23,7 @@ type Service struct {
 	userStore     _interface.UserStore
 	userRoleStore _interface.UserRoleStore
 
+	grpcTry 	  _interface.GrpcTryEndpoint
 	country 	  _interface.CountryEndpoint
 	recipe 		  _interface.RecipeEndpoint
 	recipeType    _interface.RecipeTypeEndpoint
@@ -55,6 +58,7 @@ func NewService(redisURI string, pgURI string) *Service {
 		sessionStore:  store.NewSessionStoreRedis(rdb),
 		userStore:     store.NewUserStorePG(pgdb),
 		userRoleStore: store.NewUserRoleStorePG(pgdb),
+		grpcTry:       store.NewGrpcTryStore(),
 		country:       store.NewCountryStore(),
 		recipe:        store.NewRecipeStore(),
 		recipeType:    store.NewRecipeTypeStore(),
@@ -85,20 +89,27 @@ func initDatabase(dbPool *pgxpool.Pool) {
 	}
 }
 
-func (s *Service) SetupRoute(r gin.IRouter) {
+func (s *Service) SetupRoute(r gin.IRouter, serverGestion *grpc.ClientConn) {
+
+	ApiTest := service.NewTestClient(serverGestion)
 
 	r.Use(s.TokenMiddleware())
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	// Account --
 	v1 := r.Group("/api/v1")
 	{
+
 		base := v1.Group("/")
 		{
 			base.GET("logout", s.Logout)
 			base.POST("signup", s.Signup)
 			base.POST("login", s.Login)
+		}
+
+		test := v1.Group("/test")
+		{
+			test.GET("", func(c *gin.Context) { s.Name(c, ApiTest) })
 		}
 
 		users := v1.Group("/user")

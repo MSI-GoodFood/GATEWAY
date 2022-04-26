@@ -1,9 +1,16 @@
 version: '3.7'
 services:
+  redis:
+    image: redis:6
+    command: redis-server
+    ports:
+      - "6379:6379"
+
   database:
-    container_name: db
     image: postgres
     restart: always
+    depends_on:
+      - redis
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -17,12 +24,6 @@ services:
       - ./database.sql:/docker-entrypoint-initdb.d/database.sql
     command: postgres -c listen_addresses='*'
 
-  redis:
-    image: redis:6
-    command: redis-server
-    ports:
-      - "6379:6379"
-
   server:
     build: .
     depends_on:
@@ -33,7 +34,8 @@ services:
     environment:
       DEBUG: '0'
       REDIS_URL: "redis:6379"
-      DATABASE_URL: "postgresql://postgres:postgres@db:5432/goodfood"
+      DATABASE_URL: "postgresql://postgres:postgres@database:5432/goodfood"
+      API_GESTION_URL: "localhost:8081"
 
 volumes:
   data:

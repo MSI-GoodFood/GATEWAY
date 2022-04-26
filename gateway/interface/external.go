@@ -4,6 +4,10 @@ import (
 	"github.com/gofrs/uuid"
 )
 
+type GrpcTryEndpoint interface {
+	Name() (*interface{}, error)
+}
+
 type CountryEndpoint interface {
 	GetAllCountry() (*interface{}, error)
 	CreateCountry(body interface{}) (*interface{}, error)

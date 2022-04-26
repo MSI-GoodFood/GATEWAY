@@ -8,7 +8,8 @@ package main
 import (
 	_ "github.com/MSI-GoodFood/GATEWAY/_docs"
 	"github.com/MSI-GoodFood/GATEWAY/gateway"
-
+	"google.golang.org/grpc"
+	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -18,10 +19,19 @@ import (
 func main() {
 	_ = godotenv.Load()
 
-	s := gateway.NewService(os.Getenv("REDIS_URL"), os.Getenv("DATABASE_URL"))
+	API_GESTION_URL := os.Getenv("API_GESTION_URL")
+	REDIS_URL := os.Getenv("REDIS_URL")
+	DATABASE_URL := os.Getenv("DATABASE_URL")
+
+	// Setup GRPC GESTION API
+	serverGestion, err := grpc.Dial(API_GESTION_URL, grpc.WithInsecure())
+	if err != nil { log.Fatalf("did not connect to API GESTION: %v", err) }
+	defer serverGestion.Close()
+
+	s := gateway.NewService(REDIS_URL, DATABASE_URL)
 
 	g := gin.Default()
-	s.SetupRoute(g)
+	s.SetupRoute(g, serverGestion)
 
 	g.Run()
 }

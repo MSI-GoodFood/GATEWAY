@@ -14,3 +14,5 @@ docker buildx build --platform linux/amd64 -t main .; docker tag main registry.h
 ### BUILD DOCKER COMPOSE
 docker-compose-v1 down --volumes; docker-compose-v1 up --build;
 
+### UPDATE GRPC
+protoc --go_out=proto --go-grpc_out=proto proto/service.proto
