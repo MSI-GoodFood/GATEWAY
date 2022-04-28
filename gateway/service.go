@@ -94,6 +94,7 @@ func (s *Service) SetupRoute(r gin.IRouter, serverGestion *grpc.ClientConn) {
 	ApiTest := service.NewTestClient(serverGestion)
 
 	r.Use(s.TokenMiddleware())
+	r.Use(s.CORSMiddleware())
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

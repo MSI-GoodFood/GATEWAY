@@ -8,12 +8,11 @@ package main
 import (
 	_ "github.com/MSI-GoodFood/GATEWAY/docs"
 	"github.com/MSI-GoodFood/GATEWAY/gateway"
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"log"
 	"os"
-
-	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -31,6 +30,7 @@ func main() {
 	s := gateway.NewService(REDIS_URL, DATABASE_URL)
 
 	g := gin.Default()
+
 	s.SetupRoute(g, serverGestion)
 
 	g.Run()
