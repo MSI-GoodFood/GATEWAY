@@ -102,6 +102,11 @@ func (s *Service) Login(c *gin.Context) {
 		return
 	}
 
+	if user.Password != data.Password {
+		JsonError(c, "incorrect password")
+		return
+	}
+
 	user.ID = data.ID
 	token := randomString(20)
 
