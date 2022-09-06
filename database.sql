@@ -18,3 +18,13 @@ CREATE TABLE IF NOT EXISTS "UserRole"
     "id" uuid PRIMARY KEY,
     "label" varchar UNIQUE NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS "Country"
+(
+    "id" uuid PRIMARY KEY,
+    "label" varchar UNIQUE NOT NULL
+    "code" varchar UNIQUE NOT NULL
+);
+
+INSERT INTO UserRole (label) VALUES ("CUSTOMER"), ("DELIVERY"), ("ACCOUNTANT"), ("ADMIN");
+INSERT INTO Contry (label, code) VALUES ("France", "FR");
