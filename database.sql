@@ -2,6 +2,8 @@ CREATE SCHEMA IF NOT EXISTS public;
 grant usage on schema public to public;
 grant create on schema public to public;
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE IF NOT EXISTS "User"
 (
     "id" uuid PRIMARY KEY,
@@ -26,5 +28,11 @@ CREATE TABLE IF NOT EXISTS "Country"
     "code" varchar UNIQUE NOT NULL
 );
 
-INSERT INTO UserRole (label) VALUES ("CUSTOMER"), ("DELIVERY"), ("ACCOUNTANT"), ("ADMIN");
-INSERT INTO Contry (label, code) VALUES ("France", "FR");
+INSERT INTO UserRole
+VALUES
+       (uuid_generate_v4(), "CUSTOMER"),
+       (uuid_generate_v4(), "DELIVERY"),
+       (uuid_generate_v4(), "ACCOUNTANT"),
+       (uuid_generate_v4(), "ADMIN");
+
+INSERT INTO Country VALUES (uuid_generate_v4(), "France", "FR");
