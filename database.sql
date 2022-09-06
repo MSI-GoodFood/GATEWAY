@@ -28,22 +28,22 @@ CREATE TABLE IF NOT EXISTS "Country"
     "code" varchar UNIQUE NOT NULL
 );
 
-INSERT INTO UserRole
+INSERT INTO "UserRole"
     VALUES
        (uuid_generate_v4(), "CUSTOMER"),
        (uuid_generate_v4(), "DELIVERY"),
        (uuid_generate_v4(), "ACCOUNTANT"),
        (uuid_generate_v4(), "ADMIN");
 
-INSERT INTO Country
+INSERT INTO "Country"
     VALUES (uuid_generate_v4(), "France", "FR");
-INSERT INTO User
+INSERT INTO "User"
     VALUES (
             uuid_generate_v4(),
             "admin@admin.fr",
             "admin123",
             CURRENT_TIMESTAMP(),
             true,
-            select id from UserRole where label = 'ADMIN',
-            select id from Country where label = 'France'
+            select id from "UserRole" where label = 'ADMIN',
+            select id from "Country" where label = 'France'
         );
