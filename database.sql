@@ -42,8 +42,8 @@ INSERT INTO "User"
             uuid_generate_v4(),
             'admin@admin.fr',
             'admin123',
-            CURRENT_TIMESTAMP(),
+            CURRENT_TIMESTAMP,
             true,
-            select id from "UserRole" where label = 'ADMIN',
-            select id from "Country" where label = 'France'
+            (select id from "UserRole" where label = 'ADMIN'),
+            (select id from "Country" where label = 'France')
         );
