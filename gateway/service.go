@@ -89,9 +89,10 @@ func initDatabase(dbPool *pgxpool.Pool) {
 	}
 }
 
-func (s *Service) SetupRoute(r gin.IRouter, serverGestion *grpc.ClientConn) {
+func (s *Service) SetupRoute(r gin.IRouter, serverGestion *grpc.ClientConn, serverOrder *grpc.ClientConn) {
 
 	ApiTest := service.NewTestClient(serverGestion)
+	ApiOrder := service.NewOrderClient(serverOrder)
 
 	r.Use(s.TokenMiddleware())
 	r.Use(s.CORSMiddleware())
@@ -110,7 +111,12 @@ func (s *Service) SetupRoute(r gin.IRouter, serverGestion *grpc.ClientConn) {
 
 		test := v1.Group("/test")
 		{
-			test.GET("", func(c *gin.Context) { s.Name(c, ApiTest) })
+			test.GET("", func(c *gin.Context) { s.Test(c, ApiTest) })
+		}
+
+		testOrderApi := v1.Group("/order")
+		{
+			testOrderApi.POST("alive", func(c *gin.Context) { s.TestOrderApi(c, ApiOrder) })
 		}
 
 		users := v1.Group("/user")

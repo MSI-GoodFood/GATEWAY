@@ -36,6 +36,7 @@ services:
       REDIS_URL: "redis:6379"
       DATABASE_URL: "postgresql://postgres:postgres@database:5432/goodfood"
       API_GESTION_URL: "localhost:8081"
+      API_ORDER_URL: "localhost:9002"
 
 volumes:
   data:

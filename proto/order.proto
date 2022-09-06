@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = ".;proto";
+
+service Order {
+  rpc Alive (TestAliveRequest) returns (TestAliveResponse) {}
+}
+
+message TestAliveRequest {
+  string name = 1;
+}
+
+message TestAliveResponse {
+  string name = 1;
+}

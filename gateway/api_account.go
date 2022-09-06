@@ -107,17 +107,16 @@ func (s *Service) Login(c *gin.Context) {
 		return
 	}
 
-	user.ID = data.ID
 	token := randomString(20)
 
-	err = s.sessionStore.AddToken(user.ID, token)
+	err = s.sessionStore.AddToken(data.ID, token)
 	if err != nil {
 		JsonError(c, err.Error())
 		return
 	}
 
 	JsonSuccess(c, model.Account{
-		User:  &user,
+		User: data,
 		Token: token,
 	})
 
