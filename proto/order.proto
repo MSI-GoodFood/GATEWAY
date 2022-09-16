@@ -5,7 +5,32 @@ package proto;
 option go_package = ".;proto";
 
 service Order {
-  rpc Alive (TestAliveRequest) returns (TestAliveResponse) {}
+    rpc GetAll (Empty) returns (OrderList) {}
+    rpc Get (OrderRequestId) returns (OrderObject) {}
+    rpc Insert (OrderObject) returns (OrderObject) {}
+    rpc Update (OrderObject) returns (OrderObject) {}
+    rpc Remove (OrderRequestId) returns (Empty) {}
+    rpc Alive (TestAliveRequest) returns (TestAliveResponse) {}
+}
+
+message Empty {}
+
+message OrderObject {
+    string latitude = 1;
+    string longitude = 2;
+    string idStatus = 3;
+    string idType = 4;
+    string idCustomer = 5;
+    string idDelivery = 6;
+    string idShop = 7;
+}
+
+message OrderList {
+    repeated OrderObject orders = 1;
+}
+
+message OrderRequestId {
+    string id = 1;
 }
 
 message TestAliveRequest {
