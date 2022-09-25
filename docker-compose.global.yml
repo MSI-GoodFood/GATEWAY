@@ -1,0 +1,142 @@
+version: '3.7'
+services:
+
+# redis
+  redis:
+    container_name: redis
+    image: redis:6
+    command: redis-server
+    ports:
+      - "6379:6379"
+    networks:
+      bridged:
+        ipv4_address: 172.16.1.206
+
+# Service de gateway
+  gateway:
+    build: GATEWAY #dossier dans lequel lancer le Dockerfile pour build l'image
+    image: gateway:latest
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db-gateway
+      - redis
+    environment:
+      DEBUG: '0'
+      REDIS_URL: "172.16.1.206:6379"
+      DATABASE_URL: "postgresql://postgres:postgres@172.16.1.201:5432/goodfood"
+      API_GESTION_URL: "dns:///gestion:8080"
+      API_ORDER_URL: "dns:///commande:9000"
+    networks:
+      bridged:
+        ipv4_address: 172.16.1.200
+
+# Base de données du service de gateway
+  db-gateway:
+    image: 'postgres:14'
+    restart: always
+    container_name: db-gateway
+    depends_on:
+      - redis
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: goodfood
+    ports:
+      - "8001:5432"
+    expose:
+      - "5432"
+    volumes:
+      - ./GATEWAY/database.sql:/docker-entrypoint-initdb.d/database.sql
+    command: postgres -c listen_addresses='*'
+    networks:
+      bridged:
+        ipv4_address: 172.16.1.201
+
+# Service de gestion
+  gestion:
+    build: API-GESTION
+    image: gestion:latest
+    container_name: gestion
+    ports:
+      - "9001:8080"
+    depends_on: 
+      - db-gestion
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://172.16.1.203:5432/gestion
+      SPRING_DATASOURCE_USERNAME: gestion
+      SPRING_DATASOURCE_PASSWORD: gestion
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    networks:
+      bridged:
+        ipv4_address: 172.16.1.202
+        
+# Base de données du service de gestion
+  db-gestion:
+    image: 'postgres:14'
+    container_name: db-gestion
+    environment:
+      POSTGRES_USER: gestion
+      POSTGRES_PASSWORD: gestion
+      POSTGRES_DB: gestion
+    ports:
+      - "5433:5432"
+    command: "-c log_statement=all"
+    networks:
+      bridged:
+        ipv4_address: 172.16.1.203
+
+# Service de commande
+  commande:
+    build: API_COMMANDE
+    image: commande:latest
+    container_name: commande
+    ports:
+      - "9002:9000"
+    depends_on: 
+      - db-commande
+    environment:
+      PGUSER: postgres
+      PGHOST: 172.16.1.205
+      PGPASSWORD: postgres
+      PGDATABASE: commande
+      PGPORT: 5432
+    networks:
+      bridged:
+        ipv4_address: 172.16.1.204
+
+# Base de données du service de commande
+  db-commande:
+    image: 'postgres:14'
+    restart: always
+    container_name: db-commande
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: commande
+    ports:
+      - "5434:5432"
+    expose:
+      - "5432"
+    volumes:
+      - ./API_COMMANDE/app/database/database-order.sql:/docker-entrypoint-initdb.d/database-order.sql
+    command: postgres -c listen_addresses='*'
+    networks:
+      bridged:
+        ipv4_address: 172.16.1.205
+
+# Ajouter le container du frontend
+
+networks:
+  bridged:
+    name: bridged-net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.1.0/16
+
+volumes:
+  data:
+
+
